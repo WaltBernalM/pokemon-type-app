@@ -95,10 +95,12 @@ function calculateType(types) {
       }
     }
     const attack = {effective, nonEffective, noEffect}
-
+    
+    /* Weaker equals 4x damage */
     // Weak equals 2x damage
-    // standard equals 1x damage
-    // strong equals 0.5x damage (or 0.25x when calculated)
+    // Standard equals 1x damage
+    // Strong equals 0.5x damage
+    /* Stronger equals 0.25 damage */
     // immune equals 0x damage
     // defense stats multiply each other
     const completeWeaknessesList = {}
@@ -107,19 +109,34 @@ function calculateType(types) {
       const damage2 = assignDamageX(typeName, weakDefense2, strongDefense2, immuneDefense2)
       completeWeaknessesList[typeName] = damage1 * damage2
     }
-    const weak = [], strong = [], immune = []
+    
+    // Calculate the damage taken
+    const weak = [], strong = [], immune = [], weaker = [], stronger = []
     for (const key in completeWeaknessesList) {
-      if (completeWeaknessesList[key] >= 2) {
-        weak.push(key)
-      } else if (completeWeaknessesList[key] === 0) {
-        immune.push(key)
-      } else if (completeWeaknessesList[key] !== 1) {
-        strong.push(key)
+      const damageValue = completeWeaknessesList[key]
+      switch (damageValue) {
+        case 4:
+          weaker.push(key)
+          break
+        case 2:
+          weak.push(key)
+          break
+        case 0:
+          immune.push(key)
+          break
+        case 0.5:
+          strong.push(key)
+          break
+        case 0.25:
+          stronger.push(key)
+          break
+        default:
+          break
       }
     }
-    const defense = { weak, strong, immune }
+    const defense = { weaker, weak, strong, stronger, immune }
     
-    const scores = calculateTypeScores(effective, nonEffective, noEffect, weak, strong, immune, typesCount)
+    const scores = calculateTypeScores(effective, nonEffective, noEffect, weak, strong, immune, typesCount, weaker, stronger)
 
     return {
       type: `${queryType1}/${queryType2}`,
