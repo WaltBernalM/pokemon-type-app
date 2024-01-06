@@ -35,8 +35,10 @@ function calculateType(types) {
   if (types.length === 1) { 
     return {
       type: queryType1,
-      scores: scores1,
-      info: pokdeData1
+      info: {
+        scores: scores1,
+        pokdeData1,
+      },
     }
   }
 
@@ -58,16 +60,6 @@ function calculateType(types) {
       },
     } = pokdeData2
 
-    scores2 = calculateTypeScores(
-      effectiveAttack2,
-      nonEffectiveAttack2,
-      noEffectAttack2,
-      weakDefense2,
-      strongDefense2,
-      immuneDefense2,
-      typesCount
-    )
-
     // Effective > nonEffective > noEffect
     const allTypes = pokemons.types.nameList
     const effective =[], nonEffective = [], noEffect = []
@@ -87,32 +79,17 @@ function calculateType(types) {
 
       if (
         nonEffectiveAttack1.includes(typeName) &&
-        !effective.includes(typeName) &&
-        !nonEffective.includes(typeName)
-      ) {
-        nonEffective.push(typeName)
-      }
-      if (
         nonEffectiveAttack2.includes(typeName) &&
-        !effective.includes(typeName) &&
-        !nonEffective.includes(typeName)
+        !effective.includes(typeName)
       ) {
         nonEffective.push(typeName)
       }
 
       if (
         noEffectAttack1.includes(typeName) &&
-        !effective.includes(typeName) &&
-        !nonEffective.includes(typeName) &&
-        !noEffect.includes(typeName)
-      ) {
-        noEffect.push(typeName)
-      }
-      if (
         noEffectAttack2.includes(typeName) &&
         !effective.includes(typeName) &&
-        !nonEffective.includes(typeName) &&
-        !noEffect.includes(typeName)
+        !nonEffective.includes(typeName)
       ) {
         noEffect.push(typeName)
       }
@@ -146,9 +123,8 @@ function calculateType(types) {
 
     return {
       type: `${queryType1}/${queryType2}`,
-      scores,
-      effectiveLength: effective.length,
       info: {
+        scores,
         attack,
         defense,
       },
