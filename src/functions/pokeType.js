@@ -22,7 +22,7 @@ app.http('pokeType', {
       
       const types = jsonBody.types
       const [typeA, typeB] = types
-      const typesFormatted = [typeA.toLowerCase(), typeB.toLowerCase()]
+      const typesFormatted = types.length === 2 ? [typeA.toLowerCase(), typeB.toLowerCase()] : [typeA.toLowerCase()]
       if (!validTypes(typesFormatted)) {
         const response = { message: "types property has invalid content" }
         return {
