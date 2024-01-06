@@ -21,7 +21,9 @@ app.http('pokeType', {
       }
       
       const types = jsonBody.types
-      if (!validTypes(types)) {
+      const [typeA, typeB] = types
+      const typesFormatted = [typeA.toLowerCase(), typeB.toLowerCase()]
+      if (!validTypes(typesFormatted)) {
         const response = { message: "types property has invalid content" }
         return {
           status: 400,
@@ -31,7 +33,7 @@ app.http('pokeType', {
       }
 
       // Create response
-      const data = calculateType(types)
+      const data = calculateType(typesFormatted)
       const response = {
         data
       }
