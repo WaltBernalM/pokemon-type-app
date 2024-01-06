@@ -73,8 +73,8 @@
         },
         "defense": {
           "weak": ["fire", "ice", "poison", "flying", "bug"],
-          "strong": ["water", "grass", "electric"],
-          "immune": ["ground"]
+          "strong": ["water", "grass", "electric", "ground"],
+          "immune": []
         }
       },
       "electric": {
@@ -260,7 +260,7 @@
         },
         "defense": {
           "weak": ["poison", "steel"],
-          "strong": ["bug", "dark"],
+          "strong": ["fighting", "bug", "dark"],
           "immune": ["dragon"]
         }
       }
