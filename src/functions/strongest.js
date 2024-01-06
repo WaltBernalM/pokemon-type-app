@@ -2,6 +2,7 @@ const { app } = require('@azure/functions')
 const calculateType = require('../utils/calculateType')
 const arraysEqual = require('../utils/arraysEqual')
 const pokemons = require("../json/pokemons.json")
+const sortArray = require('../utils/sortArray')
 
 app.http('strongest', {
   methods: ['GET'],
@@ -48,38 +49,21 @@ app.http('strongest', {
       }
 
       const url = new URL(request.url)
-      const sortOrder = url.searchParams.get("sort")
+      const sortCriteria = url.searchParams.get("sort")
+      const sortOrder = url.searchParams.get("order")
       const response = {}
-      if (!sortOrder) {
+      if (!sortCriteria) {
         response['data'] = strongestList
       } else {
         const strongestListCopy = JSON.parse(JSON.stringify(strongestList))
-        if (sortOrder === "attack") {
-          const sortedStrongestList = strongestListCopy.sort(
-            (typeDataA, typeDataB) => {
-              const attackA = typeDataA.info.scores.attackScore
-              const attackB = typeDataB.info.scores.attackScore
-              return attackB - attackA
-            }
-          )
+        if (sortCriteria === "attack") {
+          const sortedStrongestList = sortArray(strongestListCopy, sortCriteria, sortOrder)
           response["data"] = sortedStrongestList
-        } else if (sortOrder === "defense") {
-          const sortedStrongestList = strongestListCopy.sort(
-            (typeDataA, typeDataB) => {
-              const defenseA = typeDataA.info.scores.defenseScore
-              const defenseB = typeDataB.info.scores.defenseScore
-              return defenseB - defenseA
-            }
-          )
+        } else if (sortCriteria === "defense") {
+          const sortedStrongestList = sortArray(strongestListCopy, sortCriteria, sortOrder)
           response["data"] = sortedStrongestList
-        } else if (sortOrder === "average") {
-          const sortedStrongestList = strongestListCopy.sort(
-            (typeDataA, typeDataB) => {
-              const averageA = typeDataA.info.scores.averageScore
-              const averageB = typeDataB.info.scores.averageScore
-              return averageB - averageA
-            }
-          )
+        } else if (sortCriteria === "average") {
+          const sortedStrongestList = sortArray(strongestListCopy, sortCriteria, sortOrder)
           response["data"] = sortedStrongestList
         } else {
           const response = { message: "invalid sort query" }
