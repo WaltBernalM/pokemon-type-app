@@ -4,7 +4,7 @@ const arraysEqual = require('../utils/arraysEqual')
 const pokemons = require("../json/pokemons.json")
 const sortArray = require('../utils/sortArray')
 
-app.http('strongest', {
+app.http('strongestTypes', {
   methods: ['GET'],
   authLevel: 'anonymous',
   handler: async (request, context) => {
