@@ -37,7 +37,8 @@ function calculateType(types) {
       type: queryType1,
       info: {
         scores: scores1,
-        pokdeData1,
+        attack: attack1,
+        defense: defense1
       },
     }
   }
